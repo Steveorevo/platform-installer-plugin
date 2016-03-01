@@ -6,7 +6,7 @@
         "psr-0": {"Steveorevo\\Composer": "src/"}
     },
     "extra": {
-        "class": "phpDocumentor\\Composer\\TemplateInstallerPlugin"
+        "class": "Steveorevo\\Composer\\PlatformInstallerPlugin"
     },
     "require": {
         "composer-plugin-api": "^1.0"
