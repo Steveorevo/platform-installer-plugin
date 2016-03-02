@@ -8,15 +8,15 @@ use Composer\Installer\LibraryInstaller;
 class PlatformInstaller extends LibraryInstaller
 {
     /**
-     * This changed
+     * This changed again
      */
     public function getInstallPath(PackageInterface $package)
     {
-        return '../someplace';
+        return '../../someplace';
     }
 
     /**
-     * 
+     *
      */
     public function supports($packageType)
     {
