@@ -44,12 +44,12 @@ class PlatformInstallerPlugin implements PluginInterface
         // Cycle through platform installers
         $installNow = array();
         foreach($pi as $platform => $installer) {
-            if (empty($install['dir'])) {
-                $install['dir'] = $config->get('vendor-dir') . '/steveorevo/platform/' . strtolower($platform);
-            }
             if ('all' === strtolower($platform)) {
                 foreach($installer as $install) {
-                    if (!empty( $install['url'])) {
+                    if (!empty($install['url'])) {
+                        if (empty($install['dir'])) {
+                            $install['dir'] = $config->get('vendor-dir') . '/steveorevo/platform/' . strtolower($platform);
+                        }
                         if (!is_dir($install['dir'])) {
                             array_push($installNow, $install);
                         }
@@ -57,7 +57,11 @@ class PlatformInstallerPlugin implements PluginInterface
                 }
             }else{
                 foreach($installer as $install) {
-                    // Check for architectur
+                    if (empty($install['dir'])) {
+                        $install['dir'] = $config->get('vendor-dir') . '/steveorevo/platform/' . strtolower($platform);
+                    }
+
+                    // Check for architecture
                     $arch = "";
                     if ( substr( $platform, - 3 ) === "_64" || substr( $platform, - 3 ) === "_32" ) {
                         $arch     = substr( $platform, - 3 );
