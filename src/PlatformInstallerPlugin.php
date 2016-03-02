@@ -51,14 +51,14 @@ class PlatformInstallerPlugin implements PluginInterface
                         if (empty($install['dir'])) {
                             $targetDir = $config->get('vendor-dir') . '/platform';
                         }else{
-                            $targetDir .=  getcwd() . '/' . $install['dir'];
+                            $targetDir .= $install['dir'];
                         }
                         if (!is_dir($targetDir)) {
                             $downloadManager = $composer->getDownloadManager();
                             $version = $package->getVersion();
                             $versionParser = new VersionParser();
                             $normVersion = $versionParser->normalize($version);
-                            $package = new Package('PlatformInstaller', $normVersion, $version);
+                            $package = new Package($url, $normVersion, $version);
                             $package->setTargetDir($targetDir);
                             $package->setInstallationSource('dist');
                             if (false === strpos($url, '.zip')) {
