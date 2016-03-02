@@ -63,13 +63,14 @@ class PlatformInstallerPlugin implements PluginInterface
                         $arch     = substr( $platform, - 3 );
                         $platform = substr( $platform, 0, - 3 );
                     }
-                    // Prevent matching 'win' within 'Darwin' if we know we're mac
+                    // Prevent matching 'win' within 'Darwin' and computer name conflicts on Mac
                     $uname = php_uname();
                     if ( PHP_OS === "Darwin" ) {
                         $platform = str_ireplace('Darwin', 'Macintosh', $platform);
                         $uname = str_ireplace('Darwin', 'Macintosh', $uname);
+                        $uname = str_ireplace(gethostname(), '', $uname);
                     }
-                    trace(gethostname()  . ' ' . $platform . ' >>> ' . $uname);
+                    trace( $platform . ' >>> ' . $uname);
                     if ( false !== stripos( $uname, $platform ) ) {
                         if ( $arch !== "" ) {
                             if ( $arch === '_' . ( 8 * PHP_INT_SIZE ) ) {
