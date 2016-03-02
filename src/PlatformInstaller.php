@@ -8,7 +8,7 @@ use Composer\Installer\LibraryInstaller;
 class PlatformInstaller extends LibraryInstaller
 {
     /**
-     * {@inheritDoc}
+     * This changed
      */
     public function getInstallPath(PackageInterface $package)
     {
@@ -16,7 +16,7 @@ class PlatformInstaller extends LibraryInstaller
     }
 
     /**
-     * {@inheritDoc}
+     * 
      */
     public function supports($packageType)
     {
