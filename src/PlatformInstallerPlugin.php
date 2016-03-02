@@ -43,15 +43,15 @@ class PlatformInstallerPlugin implements PluginInterface
 
         // Cycle through platform installers
         foreach($pi as $platform => $installer) {
-            if ('all' === strtolower( $platform)) {
+            if ('all' === strtolower($platform)) {
                 foreach($installer as $install) {
                     if (!empty( $install['url'])) {
                         $url = $install['url'];
                         $targetDir = $config->get('vendor-dir');
                         if (empty($install['dir'])) {
-                            $targetDir = $config->get('vendor-dir') . '/platform';
+                            $targetDir = $config->get('vendor-dir') . '/platform/' . strtolower($platform);
                         }else{
-                            $targetDir .= $install['dir'];
+                            $targetDir = $install['dir'];
                         }
                         if (!is_dir($targetDir)) {
                             $downloadManager = $composer->getDownloadManager();
