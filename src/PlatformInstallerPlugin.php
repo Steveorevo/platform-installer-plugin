@@ -36,11 +36,21 @@ class PlatformInstallerPlugin implements PluginInterface
         }
         if ( false === $pi ) return;
 
-        // Download the package
-        trace( $composer->getPackage() );
+        // Download packages that match the given platform
         foreach( $pi as $platform => $installer ) {
-            trace( $platform );
-            trace( $installer );
+            if ( 'all' === strtolower( $platform ) ) {
+                foreach( $installer as $install ) {
+                    if ( !empty( $install['url'] ) ) {
+                        $url = $install['url'];
+                        $dir = getcwd();
+                        trace( $url );
+                        trace( $dir );
+//                        if ( !empty( $install['dir'] ) ) {
+//                            $dir =  $install['dir'];
+//                        }
+                    }
+                }
+            }
         }
     }
 }
