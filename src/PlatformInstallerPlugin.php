@@ -2,9 +2,12 @@
 
 namespace Steveorevo\Composer;
 
-use Composer\Composer;
-use Composer\IO\IOInterface;
+use Composer\Package\Version\VersionParser;
+use Composer\Package\RootPackageInterface;
 use Composer\Plugin\PluginInterface;
+use Composer\Package\Package;
+use Composer\IO\IOInterface;
+use Composer\Composer;
 
 // Our native trace function for PHP
 function trace($msg, $j = false) {
@@ -30,31 +33,50 @@ class PlatformInstallerPlugin implements PluginInterface
 
         // Look for extra platform-installer definition
         $pi = false;
-        $extra = $composer->getPackage()->getExtra();
-        if ( !empty( $extra['platform-installer'] ) ) {
+        $package = $composer->getPackage();
+        $config = $composer->getConfig();
+        $extra = $package->getExtra();
+        if (!empty($extra['platform-installer']) ) {
             $pi = $extra['platform-installer'];
         }
-        if ( false === $pi ) return;
+        if (false === $pi) return;
 
         // Cycle through platform installers
-        foreach( $pi as $platform => $installer ) {
-            if ( 'all' === strtolower( $platform ) ) {
-                foreach( $installer as $install ) {
-                    if ( !empty( $install['url'] ) ) {
+        foreach($pi as $platform => $installer) {
+            if ('all' === strtolower( $platform)) {
+                foreach($installer as $install) {
+                    if (!empty( $install['url'])) {
                         $url = $install['url'];
-                        $dir = $composer->getConfig()->get('vendor-dir');
-                        if ( empty( $install['dir'] ) ) {
-                            $dir = $composer->getConfig()->get('vendor-dir') . '/platform';
+                        $targetDir = $config->get('vendor-dir');
+                        if (empty($install['dir'])) {
+                            $targetDir = $config->get('vendor-dir') . '/platform';
                         }else{
-                            $dir .=  getcwd() . '/' . $install['dir'];
+                            $targetDir .=  getcwd() . '/' . $install['dir'];
                         }
-                        if ( !is_dir( $dir ) ) {
-//                            $dlm = $composer->getDownloadManager();
-//                            $versionParser = new VersionParser();
-//                            $version = $versionParser->normalize( '0.0.0' );
-//                            $package = new Package(self::PHANTOMJS_NAME, $normVersion, $version);
+                        if (!is_dir($targetDir)) {
+                            $downloadManager = $composer->getDownloadManager();
+                            $version = $package->getVersion();
+                            $versionParser = new VersionParser();
+                            $normVersion = $versionParser->normalize($version);
+                            $package = new Package('PlatformInstaller', $normVersion, $version);
+                            $package->setTargetDir($targetDir);
+                            $package->setInstallationSource('dist');
+                            if (false === strpos($url, '.zip')) {
+                                $package->setDistType('tar');
+                            }else{
+                                $package->setDistType('zip');
+                            }
+                            $package->setDistUrl($url);
+                            try {
+                                $downloadManager->download($package, $targetDir, false);
+                            }catch(\Exception $e) {
+                                if ($e instanceof \Composer\Downloader\TransportException && $e->getStatusCode() === 404) {
+                                    $io->write("<warning>File not found: $url</warning>");
+                                }else{
+                                    $io->write("<warning>Error downloading: $url</warning>");
+                                }
+                            }
                         }
-                        trace( $composer->getPackage()->getVersion() );
                         trace( $url );
                         trace( $dir );
                     }
