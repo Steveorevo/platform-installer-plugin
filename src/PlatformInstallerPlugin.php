@@ -42,44 +42,63 @@ class PlatformInstallerPlugin implements PluginInterface
         if (false === $pi) return;
 
         // Cycle through platform installers
+        $installNow = array();
         foreach($pi as $platform => $installer) {
             if ('all' === strtolower($platform)) {
                 foreach($installer as $install) {
                     if (!empty( $install['url'])) {
-                        $url = $install['url'];
-                        $targetDir = $config->get('vendor-dir');
                         if (empty($install['dir'])) {
-                            $targetDir = $config->get('vendor-dir') . '/platform/' . strtolower($platform);
-                        }else{
-                            $targetDir = $install['dir'];
+                            $install['dir'] = $config->get('vendor-dir') . '/steveorevo/platform/' . strtolower($platform);
                         }
-                        if (!is_dir($targetDir)) {
-                            $downloadManager = $composer->getDownloadManager();
-                            $version = $package->getVersion();
-                            $versionParser = new VersionParser();
-                            $normVersion = $versionParser->normalize($version);
-                            $package = new Package($url, $normVersion, $version);
-                            $package->setTargetDir($targetDir);
-                            $package->setInstallationSource('dist');
-                            if (false === strpos($url, '.zip')) {
-                                $package->setDistType('tar');
-                            }else{
-                                $package->setDistType('zip');
-                            }
-                            $package->setDistUrl($url);
-                            try {
-                                $downloadManager->download($package, $targetDir, false);
-                            }catch(\Exception $e) {
-                                if ($e instanceof \Composer\Downloader\TransportException && $e->getStatusCode() === 404) {
-                                    $io->write("<warning>File not found: $url</warning>");
-                                }else{
-                                    $io->write("<warning>Error downloading: $url</warning>");
-                                }
-                            }
+                        if (!is_dir($install['dir'])) {
+                            array_push($installNow, $install);
                         }
-                        trace( $url );
-                        trace( $targetDir );
                     }
+                }
+            }else{
+
+                // Check for architecture
+                $arch = "";
+                if (substr($platform, -3) === "_64" || substr($platform, -3) === "_32") {
+                    $arch = substr($platform, -3);
+                    $platform = substr($platform, 0, -3);
+                }
+                if (false !== stripos(php_uname(), $platform)) {
+                    if ($arch !== "") {
+                        if ($arch === '_' . (8 * PHP_INT_SIZE)){
+                            array_push($installNow, $install);
+                        }
+                    }else{
+                        array_push($installNow, $install);
+                    }
+                }
+            }
+        }
+
+        // Download platform installers
+        foreach($installNow as $install) {
+            $targetDir = $install['dir'];
+            $url = $install['url'];
+            $downloadManager = $composer->getDownloadManager();
+            $version = $package->getVersion();
+            $versionParser = new VersionParser();
+            $normVersion = $versionParser->normalize($version);
+            $package = new Package($url, $normVersion, $version);
+            $package->setTargetDir($targetDir);
+            $package->setInstallationSource('dist');
+            if (false === strpos($url, '.zip')) {
+                $package->setDistType('tar');
+            }else{
+                $package->setDistType('zip');
+            }
+            $package->setDistUrl($url);
+            try {
+                $downloadManager->download($package, $targetDir, false);
+            }catch(\Exception $e) {
+                if ($e instanceof \Composer\Downloader\TransportException && $e->getStatusCode() === 404) {
+                    $io->write("<warning>File not found: $url</warning>");
+                }else{
+                    $io->write("<warning>Error downloading: $url</warning>");
                 }
             }
         }
