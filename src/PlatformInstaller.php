@@ -29,7 +29,7 @@ class PlatformInstaller extends LibraryInstaller
     public function getInstallPath(PackageInterface $package)
     {
         $extra = $package->getExtra();
-        if (! empty( $extra['platform-installer'] ) {
+        if (! empty( $extra['platform-installer'] )) {
             $pinstall = $extra['platform-installer'];
             trace( $pinstall );
         }
