@@ -28,11 +28,11 @@ class PlatformInstallerPlugin implements PluginInterface
         $installer = new PlatformInstaller($io, $composer);
         $composer->getInstallationManager()->addInstaller($installer);
 
-        $pinstaller = false;
+        $pi = false;
         $extra = $composer->getPackage()->getExtra();
         if ( !empty( $extra['platform-installer'] ) ) {
-            $pinstaller = $extra['platform-installer'];
-            trace( $pinstaller );
+            $pi = $extra['platform-installer'];
+            trace( $pi );
         }
     }
 }
