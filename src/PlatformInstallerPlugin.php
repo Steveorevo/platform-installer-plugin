@@ -42,12 +42,14 @@ class PlatformInstallerPlugin implements PluginInterface
                 foreach( $installer as $install ) {
                     if ( !empty( $install['url'] ) ) {
                         $url = $install['url'];
-                        $dir = getcwd();
+                        $dir = $composer->getConfig()->get('vendor-dir');
+//                        if ( !empty( $install['dir'] ) ) {
+//                            $dir .=  '/' . $install['dir'];
+//                        }else{
+//                            $dir .= '/platform';
+//                        }
                         trace( $url );
                         trace( $dir );
-//                        if ( !empty( $install['dir'] ) ) {
-//                            $dir =  $install['dir'];
-//                        }
                     }
                 }
             }
