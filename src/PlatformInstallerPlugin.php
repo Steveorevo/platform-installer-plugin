@@ -36,18 +36,25 @@ class PlatformInstallerPlugin implements PluginInterface
         }
         if ( false === $pi ) return;
 
-        // Download packages that match the given platform
+        // Cycle through platform installers
         foreach( $pi as $platform => $installer ) {
             if ( 'all' === strtolower( $platform ) ) {
                 foreach( $installer as $install ) {
                     if ( !empty( $install['url'] ) ) {
                         $url = $install['url'];
                         $dir = $composer->getConfig()->get('vendor-dir');
-//                        if ( !empty( $install['dir'] ) ) {
-//                            $dir .=  '/' . $install['dir'];
-//                        }else{
-//                            $dir .= '/platform';
-//                        }
+                        if ( empty( $install['dir'] ) ) {
+                            $dir = $composer->getConfig()->get('vendor-dir') . '/platform';
+                        }else{
+                            $dir .=  getcwd() . '/' . $install['dir'];
+                        }
+                        if ( !is_dir( $dir ) ) {
+//                            $dlm = $composer->getDownloadManager();
+//                            $versionParser = new VersionParser();
+//                            $version = $versionParser->normalize( '0.0.0' );
+//                            $package = new Package(self::PHANTOMJS_NAME, $normVersion, $version);
+                        }
+                        trace( $composer->getPackage());
                         trace( $url );
                         trace( $dir );
                     }
