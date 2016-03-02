@@ -12,7 +12,7 @@ class PlatformInstaller extends LibraryInstaller
      */
     public function getInstallPath(PackageInterface $package)
     {
-        return '../../someplace';
+        return './../someplace';
     }
 
     /**
