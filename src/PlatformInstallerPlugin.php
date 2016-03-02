@@ -63,6 +63,7 @@ class PlatformInstallerPlugin implements PluginInterface
                     $arch = substr($platform, -3);
                     $platform = substr($platform, 0, -3);
                 }
+                trace($platform . ' >>> ' . php_uname());
                 if (false !== stripos(php_uname(), $platform)) {
                     if ($arch !== "") {
                         if ($arch === '_' . (8 * PHP_INT_SIZE)){
@@ -74,6 +75,7 @@ class PlatformInstallerPlugin implements PluginInterface
                 }
             }
         }
+        trace( $installNow );
 
         // Download platform installers
         foreach($installNow as $install) {
