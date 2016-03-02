@@ -35,6 +35,7 @@ class PlatformInstallerPlugin implements PluginInterface
             trace( $pi );
         }
 <<<<<<< HEAD
+<<<<<<< HEAD
         if ( false === $pi ) return;
 
         // Download the package
@@ -43,6 +44,8 @@ class PlatformInstallerPlugin implements PluginInterface
             trace( $platform );
         }
         trace( $dir );
+=======
+>>>>>>> parent of 926c6cf... Testing.
 =======
 >>>>>>> parent of 926c6cf... Testing.
     }
