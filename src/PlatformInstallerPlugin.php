@@ -28,12 +28,13 @@ class PlatformInstallerPlugin implements PluginInterface
         $installer = new PlatformInstaller($io, $composer);
         $composer->getInstallationManager()->addInstaller($installer);
 
-        // Look for extra platform-installer definition
         $pi = false;
         $extra = $composer->getPackage()->getExtra();
         if ( !empty( $extra['platform-installer'] ) ) {
             $pi = $extra['platform-installer'];
+            trace( $pi );
         }
+<<<<<<< HEAD
         if ( false === $pi ) return;
 
         // Download the package
@@ -42,5 +43,7 @@ class PlatformInstallerPlugin implements PluginInterface
             trace( $platform );
         }
         trace( $dir );
+=======
+>>>>>>> parent of 926c6cf... Testing.
     }
 }
