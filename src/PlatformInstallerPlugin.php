@@ -54,7 +54,7 @@ class PlatformInstallerPlugin implements PluginInterface
 //                            $version = $versionParser->normalize( '0.0.0' );
 //                            $package = new Package(self::PHANTOMJS_NAME, $normVersion, $version);
                         }
-                        trace( $composer->getPackage());
+                        trace( $composer->getVersion());
                         trace( $url );
                         trace( $dir );
                     }
