@@ -28,12 +28,21 @@ class PlatformInstaller extends LibraryInstaller
      */
     public function getInstallPath(PackageInterface $package)
     {
-        $extra = $package->getExtra();
-        if (! empty( $extra['platform-installer'] )) {
-            $pinstall = $extra['platform-installer'];
-            trace( $pinstall );
+        $pinstaller = false;
+        if ( $this->composer->getPackage() ) {
+            $topExtra = $this->composer->getPackage()->getExtra();
+            if ( !empty( $topExtra['platform-installer'] ) ) {
+                $pinstaller = $topExtra['platform-installer'];
+                trace( "topExtra" );
+            }
         }
-        return 'vendor';
+        $extra = $package->getExtra();
+        if ( !empty( $extra['platform-installer'] ) ) {
+            $pinstaller = $extra['platform-installer'];
+            trace( "extra" );
+        }
+        trace( $pinstaller );
+        return 'something';
     }
 
     /**
