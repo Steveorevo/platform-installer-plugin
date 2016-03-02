@@ -37,10 +37,10 @@ class PlatformInstallerPlugin implements PluginInterface
         if ( false === $pi ) return;
 
         // Download the package
-        $dir = $composer->getPackage()->getTargetDir();
+        trace( $composer->getPackage() );
         foreach( $pi as $platform => $installer ) {
             trace( $platform );
+            trace( $installer );
         }
-        trace( $dir );
     }
 }
