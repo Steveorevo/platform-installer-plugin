@@ -59,7 +59,6 @@ class PlatformInstallerPlugin implements PluginInterface
                         $uname = str_ireplace('Darwin', 'Macintosh', $uname);
                         $uname = str_ireplace(gethostname(), '', $uname);
                     }
-                    trace( $platform . ' >>> ' . $uname);
                     if ( false !== stripos( $uname, $platform ) ) {
                         if ( $arch !== "" ) {
                             if ( $arch === '_' . ( 8 * PHP_INT_SIZE ) ) {
