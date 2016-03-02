@@ -56,21 +56,22 @@ class PlatformInstallerPlugin implements PluginInterface
                     }
                 }
             }else{
-
-                // Check for architecture
-                $arch = "";
-                if (substr($platform, -3) === "_64" || substr($platform, -3) === "_32") {
-                    $arch = substr($platform, -3);
-                    $platform = substr($platform, 0, -3);
-                }
-                trace($platform . ' >>> ' . php_uname());
-                if (false !== stripos(php_uname(), $platform)) {
-                    if ($arch !== "") {
-                        if ($arch === '_' . (8 * PHP_INT_SIZE)){
-                            array_push($installNow, $install);
+                foreach($installer as $install) {
+                    // Check for architecture
+                    $arch = "";
+                    if ( substr( $platform, - 3 ) === "_64" || substr( $platform, - 3 ) === "_32" ) {
+                        $arch     = substr( $platform, - 3 );
+                        $platform = substr( $platform, 0, - 3 );
+                    }
+                    trace( $platform . ' >>> ' . php_uname() );
+                    if ( false !== stripos( php_uname(), $platform ) ) {
+                        if ( $arch !== "" ) {
+                            if ( $arch === '_' . ( 8 * PHP_INT_SIZE ) ) {
+                                array_push( $installNow, $install );
+                            }
+                        } else {
+                            array_push( $installNow, $install );
                         }
-                    }else{
-                        array_push($installNow, $install);
                     }
                 }
             }
