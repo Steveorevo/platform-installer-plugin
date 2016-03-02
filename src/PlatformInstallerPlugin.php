@@ -44,12 +44,12 @@ class PlatformInstallerPlugin implements PluginInterface
         // Cycle through platform installers
         $installNow = array();
         foreach($pi as $platform => $installer) {
+            if (empty($install['dir'])) {
+                $install['dir'] = $config->get('vendor-dir') . '/steveorevo/platform/' . strtolower($platform);
+            }
             if ('all' === strtolower($platform)) {
                 foreach($installer as $install) {
                     if (!empty( $install['url'])) {
-                        if (empty($install['dir'])) {
-                            $install['dir'] = $config->get('vendor-dir') . '/steveorevo/platform/' . strtolower($platform);
-                        }
                         if (!is_dir($install['dir'])) {
                             array_push($installNow, $install);
                         }
@@ -66,7 +66,8 @@ class PlatformInstallerPlugin implements PluginInterface
                     // Prevent matching 'win' within 'Darwin' if we know we're mac
                     $uname = php_uname();
                     if ( PHP_OS === "Darwin" ) {
-                        $uname = str_ireplace('Darwin','',$uname);
+                        $platform = str_ireplace('Darwin', 'Macintosh', $platform);
+                        $uname = str_ireplace('Darwin', 'Macintosh', $uname);
                     }
                     trace($platform . ' >>> ' . $uname);
                     if ( false !== stripos( $uname, $platform ) ) {
