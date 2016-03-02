@@ -3,7 +3,7 @@
     "type": "composer-plugin",
     "license": "MIT",
     "autoload": {
-        "psr-4": {"Steveorevo\\Composer": "src/"}
+        "psr-4": {"Steveorevo\\Composer\\": "src/"}
     },
     "extra": {
         "class": "Steveorevo\\Composer\\PlatformInstallerPlugin"
