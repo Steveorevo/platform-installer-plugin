@@ -78,7 +78,7 @@ class PlatformInstallerPlugin implements PluginInterface
                             }
                         }
                         trace( $url );
-                        trace( $dir );
+                        trace( $targetDir );
                     }
                 }
             }
