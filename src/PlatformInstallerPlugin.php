@@ -62,10 +62,14 @@ class PlatformInstallerPlugin implements PluginInterface
                     if ( false !== stripos( $uname, $platform ) ) {
                         if ( $arch !== "" ) {
                             if ( $arch === '_' . ( 8 * PHP_INT_SIZE ) ) {
-                                array_push( $installNow, $install );
+                                if (!is_dir($install['dir'])) {
+                                    array_push( $installNow, $install );
+                                }
                             }
                         } else {
-                            array_push( $installNow, $install );
+                            if (!is_dir($install['dir'])) {
+                                array_push( $installNow, $install );
+                            }
                         }
                     }
                 }
