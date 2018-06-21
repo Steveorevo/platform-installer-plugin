@@ -99,6 +99,7 @@ class PlatformInstallerPlugin implements PluginInterface
                 if ($e instanceof \Composer\Downloader\TransportException && $e->getStatusCode() === 404) {
                     $io->write("<warning>File not found: $url</warning>");
                 }else{
+                    echo $e->getMessage();
                     $io->write("<warning>Error downloading: $url</warning>");
                 }
             }
