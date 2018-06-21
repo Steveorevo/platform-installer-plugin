@@ -76,6 +76,16 @@ class PlatformInstallerPlugin implements PluginInterface
             }
         }
 
+        function getRightMost($sSrc, $sSrch) {
+    			for ($i = strlen($sSrc); $i >= 0; $i = $i - 1) {
+    				$f = strpos($sSrc, $sSrch, $i);
+    				if ($f !== FALSE) {
+    					return substr($sSrc,$f + strlen($sSrch), strlen($sSrc));
+    				}
+    			}
+    			return $sSrc;
+    		}
+
         // Download platform installers
         foreach($installNow as $install) {
             $targetDir = $install['dir'];
@@ -87,11 +97,8 @@ class PlatformInstallerPlugin implements PluginInterface
             $package = new Package($url, $normVersion, $version);
             $package->setTargetDir($targetDir);
             $package->setInstallationSource('dist');
-            if (false === strpos($url, '.zip')) {
-                $package->setDistType('tar');
-            }else{
-                $package->setDistType('zip');
-            }
+            $ext = getRightMost($url, ".");
+            $package->setDistType($ext);
             $package->setDistUrl($url);
             try {
                 $downloadManager->download($package, $targetDir, false);
